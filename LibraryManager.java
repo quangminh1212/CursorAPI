@@ -93,6 +93,15 @@ public class LibraryManager {
         library.addBook(new Book("Java Programming", "James Gosling", 5));
         library.addBook(new Book("Clean Code", "Robert C. Martin", 3));
         library.addBook(new Book("Design Patterns", "Gang of Four", 2));
+        library.addBook(new Book("The Pragmatic Programmer", "Andrew Hunt", 4));
+        library.addBook(new Book("Introduction to Algorithms", "Thomas H. Cormen", 3));
+        library.addBook(new Book("The Mythical Man-Month", "Frederick P. Brooks", 2));
+        library.addBook(new Book("Refactoring", "Martin Fowler", 3));
+        library.addBook(new Book("Code Complete", "Steve McConnell", 4));
+        library.addBook(new Book("Head First Java", "Kathy Sierra", 5));
+        library.addBook(new Book("Effective Java", "Joshua Bloch", 3));
+        library.addBook(new Book("Computer Networks", "Andrew S. Tanenbaum", 2));
+        library.addBook(new Book("Operating System Concepts", "Abraham Silberschatz", 3));
 
         int choice;
         do {
