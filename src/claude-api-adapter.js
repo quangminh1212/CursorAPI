@@ -147,15 +147,15 @@ function extractAccessToken() {
 // ============================================================================
 
 const MODEL_MAPPING = {
-    // Claude models -> Cursor models
+    // Claude models -> CursorPool models (using key FFFCAE24-82BB-4489-9515-0F623CCB1E2C)
     'claude-3-5-sonnet-20241022': 'claude-3-5-sonnet-20241022',
     'claude-3-5-sonnet-latest': 'claude-3-5-sonnet-20241022',
-    'claude-3-opus-20240229': 'gpt-4o',
-    'claude-3-sonnet-20240229': 'gpt-4o',
-    'claude-3-haiku-20240307': 'gpt-5-mini',
-    'claude-2.1': 'gpt-4o',
-    'claude-2.0': 'gpt-4o',
-    'claude-instant-1.2': 'gpt-5-mini',
+    'claude-3-opus-20240229': 'claude-3-opus-20240229',
+    'claude-3-sonnet-20240229': 'claude-3-sonnet-20240229',
+    'claude-3-haiku-20240307': 'claude-3-haiku-20240307',
+    'claude-2.1': 'claude-2.1',
+    'claude-2.0': 'claude-2.0',
+    'claude-instant-1.2': 'claude-instant-1.2',
 
     // Default
     'default': 'claude-3-5-sonnet-20241022'
