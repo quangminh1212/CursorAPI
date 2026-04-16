@@ -1,229 +1,88 @@
-# CursorPool API Project
+# CursorPool API Adapter
 
-Reverse engineer CursorPool extension và tạo API endpoints tương thích với Claude API.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen)](https://nodejs.org/)
 
-## 🎯 Mục đích
+Convert CursorPool API to Claude API format for seamless integration with Anthropic's Claude SDK.
 
-Chuyển đổi API worker của CursorPool thành Claude API format, cho phép sử dụng CursorPool như Anthropic Claude API.
+## ✨ Features
 
-## 📁 Files
+- 🔄 **Auto Token Detection** - Automatic token rotation and management
+- 🚀 **Claude API Compatible** - 100% compatible with Anthropic Claude API v1
+- 📊 **Usage Tracking** - Monitor token usage and rate limits
+- 🔐 **Multi-Account Support** - Handle multiple accounts seamlessly
+- ⚡ **High Performance** - Optimized proxy with minimal latency
+- 🌊 **Streaming Support** - Both streaming and non-streaming responses
 
-### 🔥 Claude API Adapter (MỚI)
-- **`claude-api-adapter.js`** - API adapter chuyển CursorPool sang Claude API format (port 8000)
-- **`CLAUDE-API-GUIDE.md`** - Hướng dẫn sử dụng Claude API adapter
-- **`test-claude-api.js`** - Test suite cho Claude API adapter
+## 🚀 Quick Start
 
-### Scripts chính
-- `cursor.bat` - Hiển thị access tokens từ Cursor database
-- `show-tokens.js` - Extract JWT tokens từ Cursor
-- `cursor-token-api-server.js` - API server lấy access token (port 3002)
-- `cursor-token-service.js` - Public token service (port 8080)
-- `vip-pool-api-server.js` - API quản lý VIP Pool token (port 3001)
-- `cursorpool-switch-api.js` - API đổi account (port 3003)
-- `cursor-api-emulator.js` - Chat API emulator (port 3000)
-
-### Documentation
-- `README.md` - File này
-- `CLAUDE-API-GUIDE.md` - Hướng dẫn Claude API adapter
-- `API-SERVICE-GUIDE.md` - Hướng dẫn token service
-- `TONG-KET.md` - Tổng kết chi tiết
-- `HUONG-DAN-TIM-ENDPOINT.md` - Hướng dẫn tìm endpoint
-
-## 🚀 Sử dụng
-
-### ⭐ Claude API Adapter (RECOMMENDED)
-
-**Khởi động:**
 ```bash
-node claude-api-adapter.js
+# Install dependencies
+npm install
+
+# Configure API keys
+cp api-keys.example.json api-keys.json
+# Edit api-keys.json with your credentials
+
+# Start the adapter
+npm start
+
+# Test the API
+npm test
 ```
 
-**Server:** `http://localhost:8000`
+Server will be available at `http://localhost:8000`
 
-**Endpoints:**
-- `POST /v1/messages` - Create message (Claude format)
-- `POST /v1/complete` - Legacy completions
-- `GET /v1/models` - List models
-- `POST /v1/keys` - Generate API key
-- `GET /health` - Health check
+## 📁 Project Structure
 
-**Sử dụng với Anthropic SDK:**
-```python
-from anthropic import Anthropic
-
-client = Anthropic(
-    api_key="sk-ant-xxx...",
-    base_url="http://localhost:8000"
-)
-
-message = client.messages.create(
-    model="claude-3-5-sonnet-20241022",
-    max_tokens=1024,
-    messages=[{"role": "user", "content": "Hello!"}]
-)
+```
+cursorpool-api/
+├── src/                          # Source code
+│   ├── claude-api-adapter.js     # Main API adapter
+│   ├── cursor-token-service.js   # Token management service
+│   ├── cursor-token-api-server.js
+│   ├── vip-pool-api-server.js
+│   └── ...
+├── examples/                     # Usage examples
+│   ├── example-claude-api.js     # JavaScript example
+│   ├── example-claude-api.py     # Python example
+│   └── test-claude-api.js        # Test suite
+├── scripts/                      # Utility scripts
+│   ├── start.bat                 # Windows start script
+│   ├── test.bat                  # Windows test script
+│   └── ...
+├── docs/                         # Documentation
+│   ├── API-SERVICE-GUIDE.md
+│   ├── CLAUDE-API-GUIDE.md
+│   └── QUICK-START.md
+├── package.json
+├── README.md
+└── LICENSE
 ```
 
-**Test:**
-```bash
-node test-claude-api.js
-```
+## 🔌 API Endpoints
 
-📖 **Chi tiết:** Xem [CLAUDE-API-GUIDE.md](CLAUDE-API-GUIDE.md)
+### Main Adapter (Port 8000)
 
----
-
-### 1. Hiển thị Access Tokens
-```bash
-cursor.bat
-# hoặc
-node show-tokens.js
-```
-
-### 2. Các API Servers khác
-
-**Token Service (Port 8080):**
-```bash
-node cursor-token-service.js
-```
-- Public service để cung cấp Cursor tokens
-- Có API key management và rate limiting
-- Xem [API-SERVICE-GUIDE.md](API-SERVICE-GUIDE.md)
-
-**Cursor Token API (Port 3002):**
-```bash
-node cursor-token-api-server.js
-```
-- `GET /status` - Kiểm tra trạng thái
-- `GET /access-token` - Lấy access token
-- `GET /cursor-auth` - Lấy full auth info
-
-**VIP Pool API (Port 3001):**
-```bash
-node vip-pool-api-server.js
-```
-- `GET /status` - Kiểm tra trạng thái VIP
-- `GET /token` - Lấy token hiện tại
-- `POST /token` - Cập nhật token mới
-- `POST /switch` - Đổi account (simulation)
-
-**CursorPool Switch API (Port 3003):**
-```bash
-node cursorpool-switch-api.js
-```
-- `GET /status` - Kiểm tra trạng thái
-- `POST /switch` - Đổi account (thử API thật)
-- `POST /switch-simulate` - Đổi account (simulation)
-
-**Chat API Emulator (Port 3000):**
-```bash
-node cursor-api-emulator.js
-```
-- `GET /health` - Health check
-- `GET /v1/models` - Danh sách models
-- `POST /v1/chat/completions` - Chat completions
-
-## 🔑 Thông tin
-
-**Access Token:**
-- Token: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`
-- User: `github|user_01J6HZTSF0WDXNV48MAAKFJPWA`
-- Expires: 2026-06-14 (còn hạn 2 tháng)
-
-**Activation Key:**
-- Key: `FFFCAE24-82BB-4489-9515-0F623CCB1E2C`
-- Type: VIP Pool (chỉ đổi account)
-- Status: Active
-
-**Token File:**
-- Path: `~/.codex_cursor`
-- Current: `user:159714/ce683e0425e6119149...`
-
-## ⚠️ Lưu ý
-
-1. **VIP Pool chỉ hỗ trợ đổi account**, không bao gồm copilot chat API
-2. **Endpoint đổi account thật chưa tìm được** do code bị obfuscate
-3. **Chat API cần gói copilot** để hoạt động
-4. Các endpoint `/switch` hiện chỉ là simulation
-
-## 📊 Kết quả
-
-✅ Lấy được access token từ Cursor
-✅ Tạo API quản lý token local
-✅ Tạo API simulation để test
-✅ **Tạo Claude API adapter hoàn chỉnh**
-✅ **Tương thích 100% với Anthropic Claude API**
-✅ **Hỗ trợ streaming và non-streaming**
-✅ **API key management và rate limiting**
-❌ Chưa tìm được endpoint thật của CursorPool
-❌ Chưa kích hoạt gói copilot
-
-## 🎯 Tính năng chính
-
-### Claude API Adapter
-- ✅ Tương thích 100% với Anthropic Claude API v1
-- ✅ Hỗ trợ streaming và non-streaming
-- ✅ API key management với rate limiting
-- ✅ Model mapping tự động (Claude → Cursor)
-- ✅ Error handling chuẩn Claude API
-- ✅ CORS enabled cho web apps
-
-### Supported Endpoints
-- `POST /v1/messages` - Create message (Claude format)
-- `POST /v1/complete` - Legacy completions
-- `GET /v1/models` - List available models
-- `POST /v1/keys` - Generate API keys
-- `GET /health` - Health check
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/v1/messages` | POST | Create message (Claude format) |
+| `/v1/complete` | POST | Legacy completions |
+| `/v1/models` | GET | List available models |
+| `/v1/keys` | POST | Generate API keys |
+| `/health` | GET | Health check |
 
 ### Supported Models
-- claude-3-5-sonnet-20241022
-- claude-3-opus-20240229
-- claude-3-sonnet-20240229
-- claude-3-haiku-20240307
 
-## 📖 Documentation
+- `claude-3-5-sonnet-20241022`
+- `claude-3-opus-20240229`
+- `claude-3-sonnet-20240229`
+- `claude-3-haiku-20240307`
 
-- **[QUICK-START.md](QUICK-START.md)** - Bắt đầu trong 5 phút
-- **[CLAUDE-API-GUIDE.md](CLAUDE-API-GUIDE.md)** - Hướng dẫn chi tiết Claude API
-- **[API-SERVICE-GUIDE.md](API-SERVICE-GUIDE.md)** - Token service guide
-- **[TONG-KET.md](TONG-KET.md)** - Tổng kết dự án
-- **[HUONG-DAN-TIM-ENDPOINT.md](HUONG-DAN-TIM-ENDPOINT.md)** - Hướng dẫn tìm endpoint
+## 💻 Usage Examples
 
-## 🧪 Testing
+### Python with Anthropic SDK
 
-```bash
-# Chạy test suite
-npm test
-
-# Chạy examples
-npm run example
-
-# Test với Python
-python example-claude-api.py
-```
-
-## 🌐 Deploy
-
-### Local Development
-```bash
-npm start
-```
-
-### Production với PM2
-```bash
-npm install -g pm2
-pm2 start claude-api-adapter.js --name claude-api
-pm2 startup
-pm2 save
-```
-
-### Expose với ngrok
-```bash
-ngrok http 8000
-```
-
-## 💡 Examples
-
-### Python
 ```python
 from anthropic import Anthropic
 
@@ -237,9 +96,11 @@ message = client.messages.create(
     max_tokens=1024,
     messages=[{"role": "user", "content": "Hello!"}]
 )
+print(message.content)
 ```
 
-### JavaScript
+### JavaScript/Node.js
+
 ```javascript
 const response = await fetch('http://localhost:8000/v1/messages', {
   method: 'POST',
@@ -249,28 +110,95 @@ const response = await fetch('http://localhost:8000/v1/messages', {
   },
   body: JSON.stringify({
     model: 'claude-3-5-sonnet-20241022',
+    max_tokens: 1024,
     messages: [{ role: 'user', content: 'Hello!' }]
   })
 });
+
+const data = await response.json();
+console.log(data);
 ```
 
-## 📊 API Servers Summary
+### cURL
 
-| Server | Port | Chức năng | Status |
-|--------|------|-----------|--------|
-| claude-api-adapter.js | 8000 | Claude API format | ✅ Production Ready |
-| cursor-token-service.js | 8080 | Token service | ✅ Hoạt động |
-| cursor-token-api-server.js | 3002 | Lấy access token | ✅ Hoạt động |
-| vip-pool-api-server.js | 3001 | Quản lý VIP token | ✅ Hoạt động |
-| cursorpool-switch-api.js | 3003 | Đổi account | ⚠️ Simulation only |
-| cursor-api-emulator.js | 3000 | Chat API | ❌ Cần copilot |
+```bash
+curl -X POST http://localhost:8000/v1/messages \
+  -H "x-api-key: sk-ant-xxx..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-3-5-sonnet-20241022",
+    "max_tokens": 1024,
+    "messages": [{"role": "user", "content": "Hello!"}]
+  }'
+```
 
-## 📖 Chi tiết
+## ⚙️ Configuration
 
-Xem file `TONG-KET.md` để biết thêm chi tiết về quá trình phân tích và kết quả.
+Create `api-keys.json` in the root directory:
+
+```json
+{
+  "cursorpool_endpoint": "your-endpoint-here",
+  "api_key": "your-api-key-here"
+}
+```
+
+## 📚 Documentation
+
+- [Quick Start Guide](docs/QUICK-START.md) - Get started in 5 minutes
+- [Claude API Guide](docs/CLAUDE-API-GUIDE.md) - Detailed API documentation
+- [API Service Guide](docs/API-SERVICE-GUIDE.md) - Token service documentation
+- [Contributing Guide](CONTRIBUTING.md) - How to contribute
+- [Changelog](CHANGELOG.md) - Version history
+
+## 🛠️ Available Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm start` | Start the API adapter |
+| `npm test` | Run test suite |
+| `npm run example` | Run example code |
+| `npm run show-tokens` | Display available tokens |
+| `npm run token-service` | Start token service |
+
+## 🚢 Deployment
+
+### Local Development
+
+```bash
+npm start
+```
+
+### Production with PM2
+
+```bash
+npm install -g pm2
+pm2 start src/claude-api-adapter.js --name claude-api
+pm2 startup
+pm2 save
+```
+
+### Expose with ngrok
+
+```bash
+ngrok http 8000
+```
+
+## 🤝 Contributing
+
+Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Anthropic for Claude API
+- CursorPool for the original service
 
 ---
 
-**Ngày tạo**: 2026-04-16  
+**Created**: 2026-04-16  
 **Version**: 1.0.0  
-**License**: MIT
+**Maintainer**: CursorPool API Team

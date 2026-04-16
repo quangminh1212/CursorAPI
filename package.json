@@ -2,17 +2,17 @@
   "name": "cursorpool-api",
   "version": "1.0.0",
   "description": "CursorPool API adapter - Convert CursorPool to Claude API format",
-  "main": "claude-api-adapter.js",
+  "main": "src/claude-api-adapter.js",
   "scripts": {
-    "start": "node claude-api-adapter.js",
-    "test": "node test-claude-api.js",
-    "example": "node example-claude-api.js",
-    "token-service": "node cursor-token-service.js",
-    "token-api": "node cursor-token-api-server.js",
-    "vip-pool": "node vip-pool-api-server.js",
-    "switch-api": "node cursorpool-switch-api.js",
-    "emulator": "node cursor-api-emulator.js",
-    "show-tokens": "node show-tokens.js"
+    "start": "node src/claude-api-adapter.js",
+    "test": "node examples/test-claude-api.js",
+    "example": "node examples/example-claude-api.js",
+    "token-service": "node src/cursor-token-service.js",
+    "token-api": "node src/cursor-token-api-server.js",
+    "vip-pool": "node src/vip-pool-api-server.js",
+    "switch-api": "node src/cursorpool-switch-api.js",
+    "emulator": "node src/cursor-api-emulator.js",
+    "show-tokens": "node src/show-tokens.js"
   },
   "keywords": [
     "cursor",
