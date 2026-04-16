@@ -1,10 +1,10 @@
 @echo off
 chcp 65001 >nul
-title Claude API Adapter Server
+title CursorPool API - Quick Start
 
 echo.
 echo ========================================================
-echo       Claude API Adapter - Quick Launcher
+echo       CursorPool API - Quick Start
 echo ========================================================
 echo.
 
@@ -18,9 +18,6 @@ if %errorlevel% neq 0 (
     pause
     exit /b 1
 )
-
-REM Change to project root
-cd /d "%~dp0.."
 
 REM Check dependencies
 if not exist "node_modules" (
@@ -40,18 +37,15 @@ if not exist "node_modules" (
 
 echo [INFO] Starting Claude API Adapter...
 echo.
-echo Server will run at: http://localhost:8000
+echo Server: http://localhost:8000
 echo.
-echo Press Ctrl+C to stop server
+echo Press Ctrl+C to stop
 echo.
 echo ========================================================
 echo.
 
-REM Start server
 node src/claude-api-adapter.js
 
-REM If server stops
-echo.
 echo.
 echo Server stopped.
 pause

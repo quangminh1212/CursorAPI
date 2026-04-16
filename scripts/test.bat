@@ -5,9 +5,9 @@ title Claude API - Test & Examples
 :menu
 cls
 echo.
-echo ╔══════════════════════════════════════════════════════╗
-echo ║         Claude API - Test & Examples                 ║
-echo ╚══════════════════════════════════════════════════════╝
+echo ========================================================
+echo         Claude API - Test & Examples
+echo ========================================================
 echo.
 echo  1. Run Test Suite (10 tests)
 echo  2. Run JavaScript Examples
@@ -19,9 +19,9 @@ echo  7. Create API Key
 echo.
 echo  0. Back to Main Menu
 echo.
-echo ═══════════════════════════════════════════════════════
+echo ========================================================
 echo.
-set /p choice="Nhập lựa chọn (0-7): "
+set /p choice="Enter choice (0-7): "
 
 if "%choice%"=="1" goto run_tests
 if "%choice%"=="2" goto run_js_examples
@@ -33,21 +33,22 @@ if "%choice%"=="7" goto create_key
 if "%choice%"=="0" goto end
 
 echo.
-echo ❌ Lựa chọn không hợp lệ!
+echo [ERROR] Invalid choice!
 timeout /t 2 >nul
 goto menu
 
 :run_tests
 cls
 echo.
-echo ╔══════════════════════════════════════════════════════╗
-echo ║              Running Test Suite                      ║
-echo ╚══════════════════════════════════════════════════════╝
+echo ========================================================
+echo              Running Test Suite
+echo ========================================================
 echo.
-echo ⚠️  Đảm bảo server đang chạy tại http://localhost:8000
+echo [WARNING] Make sure server is running at http://localhost:8000
 echo.
 timeout /t 3 >nul
-node test-claude-api.js
+cd /d "%~dp0.."
+node examples/test-claude-api.js
 echo.
 pause
 goto menu
@@ -55,14 +56,15 @@ goto menu
 :run_js_examples
 cls
 echo.
-echo ╔══════════════════════════════════════════════════════╗
-echo ║           Running JavaScript Examples                ║
-echo ╚══════════════════════════════════════════════════════╝
+echo ========================================================
+echo           Running JavaScript Examples
+echo ========================================================
 echo.
-echo ⚠️  Đảm bảo server đang chạy tại http://localhost:8000
+echo [WARNING] Make sure server is running at http://localhost:8000
 echo.
 timeout /t 3 >nul
-node example-claude-api.js
+cd /d "%~dp0.."
+node examples/example-claude-api.js
 echo.
 pause
 goto menu
@@ -70,24 +72,25 @@ goto menu
 :run_py_examples
 cls
 echo.
-echo ╔══════════════════════════════════════════════════════╗
-echo ║            Running Python Examples                   ║
-echo ╚══════════════════════════════════════════════════════╝
+echo ========================================================
+echo            Running Python Examples
+echo ========================================================
 echo.
-echo ⚠️  Đảm bảo server đang chạy tại http://localhost:8000
+echo [WARNING] Make sure server is running at http://localhost:8000
 echo.
 timeout /t 3 >nul
 
-REM Kiểm tra Python
+REM Check Python
 where python >nul 2>&1
 if %errorlevel% neq 0 (
-    echo ❌ Python chưa được cài đặt!
+    echo [ERROR] Python is not installed!
     echo.
     pause
     goto menu
 )
 
-python example-claude-api.py
+cd /d "%~dp0.."
+python examples/example-claude-api.py
 echo.
 pause
 goto menu
@@ -95,11 +98,12 @@ goto menu
 :show_tokens
 cls
 echo.
-echo ╔══════════════════════════════════════════════════════╗
-echo ║                 Show Tokens                          ║
-echo ╚══════════════════════════════════════════════════════╝
+echo ========================================================
+echo                 Show Tokens
+echo ========================================================
 echo.
-node show-tokens.js
+cd /d "%~dp0.."
+node src/show-tokens.js
 echo.
 pause
 goto menu
@@ -107,9 +111,9 @@ goto menu
 :check_health
 cls
 echo.
-echo ╔══════════════════════════════════════════════════════╗
-echo ║                 Health Check                         ║
-echo ╚══════════════════════════════════════════════════════╝
+echo ========================================================
+echo                 Health Check
+echo ========================================================
 echo.
 echo Checking http://localhost:8000/health ...
 echo.
@@ -122,9 +126,9 @@ goto menu
 :list_models
 cls
 echo.
-echo ╔══════════════════════════════════════════════════════╗
-echo ║                 List Models                          ║
-echo ╚══════════════════════════════════════════════════════╝
+echo ========================================================
+echo                 List Models
+echo ========================================================
 echo.
 echo Fetching models from http://localhost:8000/v1/models ...
 echo.
@@ -137,18 +141,18 @@ goto menu
 :create_key
 cls
 echo.
-echo ╔══════════════════════════════════════════════════════╗
-echo ║                 Create API Key                       ║
-echo ╚══════════════════════════════════════════════════════╝
+echo ========================================================
+echo                 Create API Key
+echo ========================================================
 echo.
-set /p keyname="Nhập tên cho API key: "
+set /p keyname="Enter name for API key: "
 echo.
 echo Creating API key "%keyname%"...
 echo.
 curl -X POST http://localhost:8000/v1/keys -H "Content-Type: application/json" -d "{\"name\":\"%keyname%\"}"
 echo.
 echo.
-echo ⚠️  LƯU API KEY NÀY! Nó sẽ không hiển thị lại.
+echo [WARNING] SAVE THIS API KEY! It will not be shown again.
 echo.
 pause
 goto menu
