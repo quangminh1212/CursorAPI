@@ -72,11 +72,15 @@ echo.
 
 for /f "delims=" %%i in ('curl -s -X POST http://localhost:8000/v1/keys -H "Content-Type: application/json" -d "{\"name\":\"Auto-Generated Key\"}"') do set API_RESPONSE=%%i
 
-REM Extract API key from response (simple parsing)
+REM Extract API key from response - improved parsing
 echo %API_RESPONSE% > temp_key.txt
-for /f "tokens=2 delims=:" %%a in ('findstr "api_key" temp_key.txt') do set API_KEY_RAW=%%a
-for /f "tokens=1 delims=," %%b in ("%API_KEY_RAW%") do set API_KEY=%%b
-set API_KEY=%API_KEY:"=%
+for /f "tokens=2 delims=:" %%a in ('findstr "api_key" temp_key.txt') do (
+    set API_KEY_RAW=%%a
+)
+REM Remove quotes and comma
+set API_KEY=%API_KEY_RAW:"=%
+set API_KEY=%API_KEY:,=%
+set API_KEY=%API_KEY: =%
 del temp_key.txt
 
 cls
