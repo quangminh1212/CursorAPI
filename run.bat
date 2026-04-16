@@ -55,6 +55,14 @@ echo   - GET  /health           Health check
 echo.
 echo ============================================================
 echo.
+echo   Usage Example:
+echo   curl -X POST http://localhost:8000/v1/messages \
+echo     -H "x-api-key: YOUR_API_KEY" \
+echo     -H "Content-Type: application/json" \
+echo     -d "{\"model\":\"claude-3-5-sonnet-20241022\",\"messages\":[{\"role\":\"user\",\"content\":\"Hello\"}]}"
+echo.
+echo ============================================================
+echo.
 echo   Press Ctrl+C to stop the server
 echo.
 echo ============================================================
