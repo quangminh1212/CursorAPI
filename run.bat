@@ -40,13 +40,42 @@ if not exist "node_modules" (
 
 echo [INFO] Starting Claude API Adapter...
 echo.
+
+REM Start server in background
+start /B node src/claude-api-adapter.js > nul 2>&1
+
+REM Wait for server to start
+echo [INFO] Waiting for server to start...
+timeout /t 3 /nobreak >nul
+
+REM Generate API key
+echo [INFO] Generating API key...
+echo.
+
+for /f "delims=" %%i in ('curl -s -X POST http://localhost:8000/v1/keys -H "Content-Type: application/json" -d "{\"name\":\"Auto-Generated Key\"}"') do set API_RESPONSE=%%i
+
+REM Extract API key from response (simple parsing)
+echo %API_RESPONSE% > temp_key.txt
+for /f "tokens=2 delims=:" %%a in ('findstr "api_key" temp_key.txt') do set API_KEY_RAW=%%a
+for /f "tokens=1 delims=," %%b in ("%API_KEY_RAW%") do set API_KEY=%%b
+set API_KEY=%API_KEY:"=%
+del temp_key.txt
+
+cls
+echo.
+echo ============================================================
+echo.
+echo            CursorPool API - Claude API Adapter
+echo.
+echo ============================================================
+echo.
 echo ============================================================
 echo   SERVER INFORMATION
 echo ============================================================
 echo.
 echo   Server URL:  http://localhost:8000
 echo   API Format:  Claude API v1 Compatible
-echo   Status:      Starting...
+echo   Status:      RUNNING
 echo.
 echo ============================================================
 echo   CONFIGURATION FOR IDE (Anthropic Compatible)
@@ -55,7 +84,7 @@ echo.
 echo   Name (Ten):              Cursor
 echo   Prefix:                  cursor
 echo   Base URL:                http://localhost:8000
-echo   API Key:                 [Generate after server starts]
+echo   API Key:                 %API_KEY%
 echo   Model ID (optional):     claude-3-5-sonnet-20241022
 echo.
 echo ============================================================
@@ -78,33 +107,25 @@ echo   - claude-3-sonnet-20240229
 echo   - claude-3-haiku-20240307
 echo.
 echo ============================================================
-echo   HOW TO GET API KEY
-echo ============================================================
-echo.
-echo   1. Wait for server to start
-echo   2. Open new terminal and run:
-echo      curl -X POST http://localhost:8000/v1/keys -H "Content-Type: application/json" -d "{\"name\":\"My Key\"}"
-echo   3. Copy the API key from response
-echo   4. Use it in your IDE configuration
-echo.
-echo ============================================================
 echo   USAGE EXAMPLE
 echo ============================================================
 echo.
 echo   curl -X POST http://localhost:8000/v1/messages \
-echo     -H "x-api-key: YOUR_API_KEY" \
+echo     -H "x-api-key: %API_KEY%" \
 echo     -H "Content-Type: application/json" \
 echo     -d "{\"model\":\"claude-3-5-sonnet-20241022\",\"messages\":[{\"role\":\"user\",\"content\":\"Hello\"}]}"
 echo.
 echo ============================================================
 echo.
-echo   Press Ctrl+C to stop the server
+echo   Server is running. Press Ctrl+C to stop.
 echo.
 echo ============================================================
 echo.
 
-node src/claude-api-adapter.js
+REM Keep window open and wait for Ctrl+C
+pause >nul
 
+REM This won't be reached unless user closes window
 echo.
 echo.
 echo ============================================================
