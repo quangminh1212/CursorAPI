@@ -1,11 +1,14 @@
 @echo off
 chcp 65001 >nul
-title CursorPool API - Quick Start
+title CursorPool API - Claude API Adapter
 
+cls
 echo.
-echo ========================================================
-echo       CursorPool API - Quick Start
-echo ========================================================
+echo ============================================================
+echo.
+echo            CursorPool API - Claude API Adapter
+echo.
+echo ============================================================
 echo.
 
 REM Check Node.js
@@ -37,15 +40,32 @@ if not exist "node_modules" (
 
 echo [INFO] Starting Claude API Adapter...
 echo.
-echo Server: http://localhost:8000
+echo   Server URL:  http://localhost:8000
+echo   API Format:  Claude API v1 Compatible
+echo   Status:      Starting...
 echo.
-echo Press Ctrl+C to stop
+echo ============================================================
 echo.
-echo ========================================================
+echo   Available Endpoints:
+echo   - POST /v1/messages      Create message
+echo   - POST /v1/complete      Legacy completions
+echo   - GET  /v1/models        List models
+echo   - POST /v1/keys          Generate API key
+echo   - GET  /health           Health check
+echo.
+echo ============================================================
+echo.
+echo   Press Ctrl+C to stop the server
+echo.
+echo ============================================================
 echo.
 
 node src/claude-api-adapter.js
 
 echo.
-echo Server stopped.
+echo.
+echo ============================================================
+echo   Server stopped
+echo ============================================================
+echo.
 pause
