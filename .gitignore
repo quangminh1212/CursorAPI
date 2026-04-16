@@ -9,6 +9,7 @@ package-lock.json
 
 # API keys and secrets
 api-keys.json
+api-key-current.txt
 *.key
 *.pem
 
