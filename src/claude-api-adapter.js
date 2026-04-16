@@ -147,18 +147,21 @@ function extractAccessToken() {
 // ============================================================================
 
 const MODEL_MAPPING = {
-    // Claude models -> CursorPool models (using key FFFCAE24-82BB-4489-9515-0F623CCB1E2C)
-    'claude-3-5-sonnet-20241022': 'claude-3-5-sonnet-20241022',
-    'claude-3-5-sonnet-latest': 'claude-3-5-sonnet-20241022',
-    'claude-3-opus-20240229': 'claude-3-opus-20240229',
-    'claude-3-sonnet-20240229': 'claude-3-sonnet-20240229',
-    'claude-3-haiku-20240307': 'claude-3-haiku-20240307',
-    'claude-2.1': 'claude-2.1',
-    'claude-2.0': 'claude-2.0',
-    'claude-instant-1.2': 'claude-instant-1.2',
+    // Claude API models -> API Worker models (from Cursor extension)
+    'claude-3-5-sonnet-20241022': 'claude-sonnet-4.5',
+    'claude-3-5-sonnet-latest': 'claude-sonnet-4.5',
+    'claude-3-opus-20240229': 'claude-opus-4.5',
+    'claude-3-sonnet-20240229': 'claude-sonnet-4',
+    'claude-3-haiku-20240307': 'claude-haiku-4.5',
+
+    // Direct mapping for new Claude 4.x models
+    'claude-sonnet-4': 'claude-sonnet-4',
+    'claude-sonnet-4.5': 'claude-sonnet-4.5',
+    'claude-opus-4.5': 'claude-opus-4.5',
+    'claude-haiku-4.5': 'claude-haiku-4.5',
 
     // Default
-    'default': 'claude-3-5-sonnet-20241022'
+    'default': 'claude-sonnet-4.5'
 };
 
 function mapModel(claudeModel) {
@@ -344,10 +347,15 @@ const server = http.createServer((req, res) => {
     if (url.pathname === '/v1/models' && req.method === 'GET') {
         sendJSON(200, {
             data: [
-                { id: 'claude-3-5-sonnet-20241022', type: 'model', display_name: 'Claude 3.5 Sonnet' },
-                { id: 'claude-3-opus-20240229', type: 'model', display_name: 'Claude 3 Opus' },
-                { id: 'claude-3-sonnet-20240229', type: 'model', display_name: 'Claude 3 Sonnet' },
-                { id: 'claude-3-haiku-20240307', type: 'model', display_name: 'Claude 3 Haiku' },
+                { id: 'claude-sonnet-4.5', type: 'model', display_name: 'Claude Sonnet 4.5', vendor: 'Anthropic' },
+                { id: 'claude-opus-4.5', type: 'model', display_name: 'Claude Opus 4.5', vendor: 'Anthropic' },
+                { id: 'claude-sonnet-4', type: 'model', display_name: 'Claude Sonnet 4', vendor: 'Anthropic' },
+                { id: 'claude-haiku-4.5', type: 'model', display_name: 'Claude Haiku 4.5', vendor: 'Anthropic' },
+                // Legacy Claude API names (mapped to new models)
+                { id: 'claude-3-5-sonnet-20241022', type: 'model', display_name: 'Claude 3.5 Sonnet (→ Sonnet 4.5)', vendor: 'Anthropic' },
+                { id: 'claude-3-opus-20240229', type: 'model', display_name: 'Claude 3 Opus (→ Opus 4.5)', vendor: 'Anthropic' },
+                { id: 'claude-3-sonnet-20240229', type: 'model', display_name: 'Claude 3 Sonnet (→ Sonnet 4)', vendor: 'Anthropic' },
+                { id: 'claude-3-haiku-20240307', type: 'model', display_name: 'Claude 3 Haiku (→ Haiku 4.5)', vendor: 'Anthropic' },
             ]
         });
         return;
@@ -363,7 +371,7 @@ const server = http.createServer((req, res) => {
         req.on('end', () => {
             try {
                 const data = JSON.parse(body);
-                const model = data.model || 'claude-3-5-sonnet-20241022';
+                const model = data.model || 'claude-sonnet-4.5';
                 const messages = data.messages || [];
                 const stream = data.stream || false;
 
@@ -434,7 +442,7 @@ const server = http.createServer((req, res) => {
             try {
                 const data = JSON.parse(body);
                 const prompt = data.prompt || '';
-                const model = data.model || 'claude-3-5-sonnet-20241022';
+                const model = data.model || 'claude-sonnet-4.5';
 
                 // Convert prompt to messages format
                 const messages = [{ role: 'user', content: prompt }];
@@ -556,7 +564,7 @@ server.listen(CONFIG.port, () => {
     console.log('   curl -X POST http://localhost:8000/v1/messages \\');
     console.log('     -H "x-api-key: YOUR_API_KEY" \\');
     console.log('     -H "Content-Type: application/json" \\');
-    console.log('     -d \'{"model":"claude-3-5-sonnet-20241022","messages":[{"role":"user","content":"Hello"}]}\'\n');
+    console.log('     -d \'{"model":"claude-sonnet-4.5","messages":[{"role":"user","content":"Hello"}]}\'\n');
 
     console.log('⏳ Ready to serve requests...\n');
 });
