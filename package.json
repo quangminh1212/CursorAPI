@@ -1,0 +1,13 @@
+{
+  "name": "claude-worker-proxy",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Anthropic-compatible proxy in front of the local CursorPool API worker",
+  "scripts": {
+    "start": "node server.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
