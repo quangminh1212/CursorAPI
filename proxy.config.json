@@ -1,0 +1,37 @@
+{
+  "port": 9183,
+  "workerBaseUrl": "http://127.0.0.1:9182",
+  "workerProtocol": "responses",
+  "workerPath": "/openai/responses",
+  "upstreamMode": "cursor_worker",
+  "debug": false,
+  "auth": {
+    "workerAuthToken": "",
+    "loginKey": "",
+    "credentialMode": "auto",
+    "preferCursorState": true
+  },
+  "models": {
+    "defaultAnthropicModel": "claude-sonnet-4-20250514",
+    "aliases": {
+      "opus": "gpt-5.3-codex",
+      "sonnet": "gpt-5.3-codex",
+      "haiku": "gpt-5.3-codex",
+      "claude-opus-4-6": "gpt-5.3-codex",
+      "claude-opus-4-20250514": "gpt-5.3-codex",
+      "claude-sonnet-4-20250514": "gpt-5.3-codex",
+      "claude-3-7-sonnet-20250219": "gpt-5.3-codex",
+      "claude-3-5-haiku-20241022": "gpt-5.3-codex",
+      "gpt-5.4-mini": "gpt-5.4-mini",
+      "gpt-5.3-codex": "gpt-5.3-codex"
+    }
+  },
+  "requestDefaults": {
+    "reasoningEffort": "medium",
+    "verbosity": "low"
+  },
+  "headers": {
+    "originator": "codex_vscode",
+    "extra": {}
+  }
+}
