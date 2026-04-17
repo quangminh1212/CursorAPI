@@ -1,0 +1,3 @@
+@echo off
+echo Starting Cursor API Bridge...
+node server.mjs
